@@ -8,7 +8,7 @@ pre {
 }
 
 a {
-  color: #00b7ff;
+  color: #00B7FF;
 }
 
 #ships {
@@ -17,14 +17,12 @@ a {
   display: flex;
   flex-direction: row;
   flex: 1;
-  background: -webkit-linear-gradient(0deg, transparent 95%, white 100%),
-    -webkit-linear-gradient(90deg, transparent 95%, white 100%);
+  background: -webkit-linear-gradient(0deg, transparent 95%, white 100%),-webkit-linear-gradient(90deg, transparent 95%, white 100%);
   background-color: #38ada9;
   background-size: 20px 20px, 20px 20px;
 }
 
-.controls,
-.settings {
+.controls, .settings {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -35,7 +33,7 @@ a {
   position: absolute;
   background: #444;
   border-radius: 20px;
-  box-shadow: 0px 3px 2px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 3px 2px 3px rgba(0,0,0,.5);
   margin-left: -20px;
   margin-top: -20px;
 }

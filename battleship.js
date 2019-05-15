@@ -10,22 +10,22 @@ function range(min, max) {
 }
 
 function clearConsole() {
-  for (var i = 0; i < process.stdout.getWindowSize()[1]; i++) {
-    console.log("\r\n");
+  for(var i = 0; i < process.stdout.getWindowSize()[1]; i++) {
+    console.log('\r\n');
   }
 }
 
 function getRangeField(max, offset) {
   const field = [];
-  const maxW = max - (offset.w - 1);
-  const maxH = max - (offset.h - 1);
+  const maxW = (max - (offset.w - 1));
+  const maxH = (max - (offset.h - 1));
   for (let i = 1; i <= maxW; i++) {
     for (let j = 1; j <= maxH; j++) {
-      field.push({ x: i, y: j });
+      field.push({x: i, y: j});
     }
   }
   const result = [];
-  for (let index = 0; index < maxW * maxH; index++) {
+  for (let index = 0; index < (maxW * maxH); index++) {
     let pick = range(0, field.length - 1);
     let fromField = field[pick];
     field.splice(pick, 1);
@@ -36,7 +36,7 @@ function getRangeField(max, offset) {
 
 class Game {
   constructor(size) {
-    this.size = size ? size : GAME_SIZE;
+    this.size = (size) ? size : GAME_SIZE;
     this.players = [];
   }
 
@@ -46,7 +46,7 @@ class Game {
   }
 
   getPlayer(playerID) {
-    return this.players.find(player => player.id === playerID);
+    return this.players.find((player) => player.id === playerID);
   }
 
   getPlayers() {
@@ -56,27 +56,27 @@ class Game {
   getSize() {
     return this.size;
   }
-
+  
   getPlayerByName(playerName) {
-    return this.players.find(player => player.name === playerName);
+    return this.players.find((player) => player.name === playerName);
   }
 
   hasPlayerWithName(playerName) {
     return this.getPlayerByName(playerName);
   }
-
+  
   dropBomb(playerLaunchingBombID, x, y) {
     let hit = [];
     this.players
-      .filter(player => player.id !== playerLaunchingBombID)
-      .forEach(player => {
-        player.ships.forEach(ship => {
-          let response = ship.wasHit(x, y);
-          if (response) {
-            hit.push(response);
-          }
-        });
+    .filter((player) => player.id !== playerLaunchingBombID)
+    .forEach((player) => {
+      player.ships.forEach((ship) => {
+        let response = ship.wasHit(x, y);
+        if (response) {
+          hit.push(response);
+        }
       });
+    });
     if (!hit.length) {
       console.log(`Bad luck\t{${x}, ${y}}.`);
     } else {
@@ -85,29 +85,23 @@ class Game {
     return hit;
   }
 
-  printMap() {
+  printMap () {
     //clearConsole();
     let numbers = [];
     for (let index = 1; index <= this.size; index++) {
       numbers.push(index % 10);
     }
-    console.log(`\n   ${numbers.join(" ")}`);
+    console.log(`\n   ${numbers.join(' ')}`);
     for (let index = 1; index <= this.size; index++) {
-      let line = new Array(this.size).fill("░");
-      this.players.forEach(players => {
-        players.getShips().forEach(ship => {
-          if (
-            index >= ship.coords.y &&
-            index <= ship.coords.y + (ship.size.h - 1)
-          ) {
-            let char = "█";
+      let line = new Array(this.size).fill('░');
+      this.players.forEach((players) => {
+        players.getShips().forEach((ship) => {
+          if (index >= ship.coords.y && index <= (ship.coords.y + (ship.size.h - 1))) {
+            let char = '█';
             if (ship.size.w === 1 && ship.size.h === 1) {
-              char = ship.hp.join("");
+              char = ship.hp.join('');
             }
-            let boat = new Array(ship.size.w)
-              .fill(char)
-              .join("")
-              .split("");
+            let boat = new Array(ship.size.w).fill(char).join('').split('');
             if (boat.length > 1) {
               boat[0] = ship.hp[0];
               boat[boat.length - 1] = ship.hp[ship.hp.length - 1];
@@ -115,18 +109,19 @@ class Game {
               if (ship.coords.y === index) {
                 boat[0] = ship.hp[0];
               }
-              if (ship.coords.y + (ship.size.h - 1) === index) {
+              if ((ship.coords.y + (ship.size.h - 1)) === index) {
                 boat[0] = ship.hp[0];
               }
             }
             line.splice(ship.coords.x - 1, boat.length, ...boat);
           }
-        });
+        })
       });
-      console.log(`${index % 10}  ${line.join(" ")}`);
+      console.log(`${index % 10}  ${line.join(' ')}`);
     }
   }
-}
+
+};
 
 class Ship {
   constructor(name, player, game, coords, size) {
@@ -141,8 +136,8 @@ class Ship {
       this.size = size;
     } else {
       this.size = {
-        w: direction === 0 ? 1 : range(1, LIMIT_SHIP),
-        h: direction === 1 ? 1 : range(1, LIMIT_SHIP)
+        w: (direction === 0) ? 1 : range(1, LIMIT_SHIP),
+        h: (direction === 1) ? 1 : range(1, LIMIT_SHIP)
       };
     }
 
@@ -160,44 +155,24 @@ class Ship {
 
     // First ship
     if (!myPlayer.ships.length) {
-      console.log(
-        `Ship [${this.name}] added here [${this.coords.x}, ${
-          this.coords.y
-        }] as the first ship.`
-      );
+      console.log(`Ship [${this.name}] added here [${this.coords.x}, ${this.coords.y}] as the first ship.`);
       this.added = true;
     } else {
       const ranges = getRangeField(game.size, this.size);
       let rangesIndex = 0;
-      let hitAnotherShip = myPlayer.isOverlappingWithShips(
-        this.size,
-        this.coords
-      );
-      while (hitAnotherShip && rangesIndex < ranges.length - 1) {
+      let hitAnotherShip = myPlayer.isOverlappingWithShips(this.size, this.coords);
+      while (hitAnotherShip && rangesIndex < (ranges.length - 1)) {
         this.coords = ranges[rangesIndex];
-        hitAnotherShip = myPlayer.isOverlappingWithShips(
-          this.size,
-          this.coords
-        );
+        hitAnotherShip = myPlayer.isOverlappingWithShips(this.size, this.coords);
         rangesIndex++;
       }
-      if (rangesIndex >= ranges.length - 1) {
-        console.log(
-          `There's no more room for this ship [${this.name}] ${this.added}.`
-        );
+      if(rangesIndex >= (ranges.length - 1)) {
+        console.log(`There's no more room for this ship [${this.name}] ${this.added}.`);
       } else {
         if (rangesIndex >= 1) {
-          console.log(
-            `Ship [${this.name}] added here [${this.coords.x}, ${
-              this.coords.y
-            }] after trying ${rangesIndex + 1} times.`
-          );
+          console.log(`Ship [${this.name}] added here [${this.coords.x}, ${this.coords.y}] after trying ${rangesIndex + 1} times.`);
         } else {
-          console.log(
-            `Ship [${this.name}] added here [${this.coords.x}, ${
-              this.coords.y
-            }].`
-          );
+          console.log(`Ship [${this.name}] added here [${this.coords.x}, ${this.coords.y}].`);
         }
         this.added = true;
       }
@@ -205,76 +180,72 @@ class Ship {
 
     this.hp = [];
     for (let index = 0; index < Math.max(this.size.h, this.size.w); index++) {
-      this.hp[index] = "1";
+      this.hp[index] = '1';
     }
   }
-
+  
   isOverlapping(size, coords) {
-    let result = false;
+    let result = false
     for (let index = 0; index < Math.max(size.w, size.h); index++) {
-      let a = coords.x + (size.w > size.h ? index : 0);
-      let b = coords.y + (size.w < size.h ? index : 0);
+      let a = coords.x + ((size.w > size.h) ? index : 0);
+      let b = coords.y + ((size.w < size.h) ? index : 0);
       if (this.isInRange(a, b)) {
-        result = { x: a, y: b };
+        result = {x: a, y: b};
       }
     }
     return result;
   }
-
+  
   isInRange(a, b) {
-    return (
-      a >= this.coords.x &&
-      a <= this.coords.x + this.size.w - 1 &&
-      b >= this.coords.y &&
-      b <= this.coords.y + this.size.h - 1
-    );
-  }
+    return (a >= (this.coords.x)
+          && a <= (this.coords.x + this.size.w - 1)
+          && b >= (this.coords.y)
+          && b <= (this.coords.y + this.size.h - 1));
+  };
 
   isDamaged(a, b) {
     if (this.isInRange(a, b)) {
       for (let index = 0; index < this.hp.length; index++) {
-        if (
-          a === this.coords.x + (this.size.w > this.size.h ? index : 0) &&
-          b === this.coords.y + (this.size.w < this.size.h ? index : 0)
-        ) {
-          if (this.hp[index] !== "0") {
-            this.hp[index] = "0";
+      if ( a === this.coords.x + ((this.size.w > this.size.h) ? index : 0)
+          && b === this.coords.y + ((this.size.w < this.size.h) ? index : 0))  {
+          if (this.hp[index] !== '0') {
+            this.hp[index] = '0';
             return index;
           }
         }
       }
     }
     return -1;
-  }
+  };
 
   wasHit(x, y) {
     if (this.isDamaged(x, y) >= 0) {
-      return {
-        id: this.id,
-        player: this.player
-      };
+        return {
+          id: this.id,
+          player: this.player
+        };
     }
     return false;
-  }
+  };
 }
 
 class Player {
   constructor(id) {
     this.id = id;
-    this.name = "";
+    this.name = '';
     this.score = 0;
     this.isActive = false;
     this.isPlayer = true;
     this.ships = [];
   }
-
-  addShip(name, game, coords, size) {
+  
+  addShip (name, game, coords, size) {
     this.ships.push(new Ship(name, this.id, game, coords, size));
   }
 
   isOverlappingWithShips(size, coords) {
     let result = false;
-    this.getShips().forEach(ship => {
+    this.getShips().forEach((ship) => {
       if (ship.isOverlapping(size, coords)) {
         result = ship;
       }
@@ -282,23 +253,23 @@ class Player {
     return result;
   }
 
-  getShips() {
-    return this.ships.filter(ship => {
+  getShips () {
+    return this.ships.filter((ship) => {
       return ship.added;
     });
   }
-  setName(name) {
+  setName (name) {
     this.name = name;
   }
-  getName() {
+  getName () {
     return this.name;
   }
-  getID() {
+  getID () {
     return this.id;
   }
-  createShips(game, howManyShips) {
+  createShips (game, howManyShips) {
     for (let index = 0; index < howManyShips; index++) {
-      this.addShip(`SS Anne #${index + 1}`, game);
+      this.addShip(`SS Anne #${index+1}`, game);
     }
   }
 }
