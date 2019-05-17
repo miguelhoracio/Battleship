@@ -8,7 +8,7 @@ pre {
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
 }
 
 #ships {
@@ -17,12 +17,14 @@ a {
   display: flex;
   flex-direction: row;
   flex: 1;
-  background: -webkit-linear-gradient(0deg, transparent 95%, white 100%),-webkit-linear-gradient(90deg, transparent 95%, white 100%);
-  background-color: #38ada9;
+  background: -webkit-linear-gradient(0deg, transparent 95%, white 100%),
+    -webkit-linear-gradient(90deg, transparent 95%, white 100%);
+  background-color: #683709;
   background-size: 20px 20px, 20px 20px;
 }
 
-.controls, .settings {
+.controls,
+.settings {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -31,9 +33,18 @@ a {
 
 .ship {
   position: absolute;
-  background: #444;
+  background: rgb(65, 155, 5);
   border-radius: 20px;
-  box-shadow: 0px 3px 2px 3px rgba(0,0,0,.5);
+  box-shadow: 0px 3px 2px 3px rgba(42, 177, 29, 0.5);
+  margin-left: -20px;
+  margin-top: -20px;
+}
+
+.shot {
+  position: absolute;
+  background: rgb(252, 10, 10);
+  border-radius: 20px;
+  box-shadow: 0px 3px 2px 3px rgba(221, 8, 8, 0.575);
   margin-left: -20px;
   margin-top: -20px;
 }
@@ -52,9 +63,9 @@ a {
 
 .controls .input,
 .settings .input {
-  border: 2px solid #0a3d62;
+  border: 2px solid #d6103b;
   border-radius: 4px;
-  background-color: #3c6382;
+  background-color: #b41500;
   color: white;
   padding: 5px 12px;
   margin: 0 12px;
@@ -63,9 +74,9 @@ a {
 
 .controls .button,
 .settings .button {
-  border: 2px solid #0a3d62;
+  border: 2px solid #d6103b;
   border-radius: 4px;
-  background-color: #3c6382;
+  background-color: #b41500;
   color: white;
   padding: 5px 12px;
   cursor: pointer;
